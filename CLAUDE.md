@@ -69,7 +69,7 @@ node -e "require('http').createServer((req,res)=>{const fs=require('fs'),path=re
 
 | 위치 | 현재 상태 | 교체 파일/방법 |
 |---|---|---|
-| 로고 | 텍스트 "KOCEA" | `assets/images/logo.png` 추가 후 `.brand-mark`/`.brand-sub` span을 `<img>`로 교체 |
+| 로고 | 완료 — `assets/images/ci.png` 적용 (`.nav-logo`/`.footer-logo`, 어두운 배경에서는 CSS invert 필터로 흰색 표시) | - |
 | 히어로 배경 | 그라디언트 폴백 | `assets/videos/hero.mp4` (위 사양 참고) |
 | 사업소개/지원내용 문구 | `[플레이스홀더]` 텍스트 | index.html 직접 수정 |
 | 행사 영상 | `VIDEO_ID_HERE` | 유튜브 업로드 후 iframe src의 영상 ID 교체 |

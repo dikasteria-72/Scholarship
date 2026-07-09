@@ -12,9 +12,10 @@
   --text-inverse: #ffffff;
   --border: #e5e7eb;
   --radius: 14px;
-  --container: 1180px;
-  --nav-h: 76px;
+  --container: 1360px;
+  --nav-h: 104px;
   --ease: cubic-bezier(.22,1,.36,1);
+  --motif-ci: url("../assets/images/ci.png");
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -61,21 +62,15 @@ ul { list-style: none; }
   backdrop-filter: blur(10px);
   box-shadow: 0 1px 0 var(--border);
 }
-.brand { display: flex; flex-direction: column; line-height: 1; gap: 4px; }
-.brand-mark {
-  font-weight: 800;
-  font-size: 22px;
-  letter-spacing: .5px;
-  color: var(--navy);
+.brand { display: flex; align-items: center; line-height: 1; }
+.nav-logo {
+  height: 68px;
+  width: auto;
+  /* 히어로(어두운 배경) 위에서는 흰색으로, 스크롤 후 흰 nav 배경에서는 원본 네이비로 */
+  filter: brightness(0) invert(1);
+  transition: filter .3s var(--ease);
 }
-.brand-mark.light { color: #fff; }
-.brand-sub {
-  font-size: 11px;
-  font-weight: 600;
-  color: var(--text-muted);
-  letter-spacing: .5px;
-}
-.brand-sub.light { color: rgba(255,255,255,.7); }
+.nav.scrolled .nav-logo { filter: none; }
 
 .nav-links { display: flex; gap: 32px; }
 .nav-links a {
@@ -211,7 +206,7 @@ ul { list-style: none; }
 }
 
 /* ===== Sections (generic) ===== */
-.section { padding: 120px 0; }
+.section { padding: 120px 0; scroll-margin-top: var(--nav-h); }
 .section-eyebrow {
   font-size: 13px;
   font-weight: 700;
@@ -231,7 +226,7 @@ ul { list-style: none; }
 .section-desc.light { color: rgba(255,255,255,.75); }
 
 /* ===== Intro ===== */
-.intro { background: var(--bg); }
+.intro { background: var(--bg); position: relative; }
 .intro-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -251,7 +246,7 @@ ul { list-style: none; }
 .intro-img::before { content: attr(data-placeholder); }
 
 /* ===== Support cards ===== */
-.support { background: var(--bg-alt); }
+.support { background: var(--bg-alt); position: relative; }
 .card-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -288,7 +283,7 @@ ul { list-style: none; }
 }
 
 /* ===== Gallery ===== */
-.gallery-section { background: var(--bg); }
+.gallery-section { background: var(--bg); position: relative; }
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -323,7 +318,7 @@ ul { list-style: none; }
 .gallery-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
 
 /* ===== History ===== */
-.history-section { background: var(--bg-alt); }
+.history-section { background: var(--bg-alt); position: relative; }
 .stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -367,7 +362,13 @@ ul { list-style: none; }
 /* ===== Footer ===== */
 .footer { background: var(--navy-dark); color: #fff; padding: 64px 0 32px; }
 .footer-inner { display: flex; flex-direction: column; gap: 24px; }
-.footer-brand { display: flex; flex-direction: column; gap: 4px; }
+.footer-brand { display: flex; }
+.footer-logo {
+  height: 68px;
+  width: auto;
+  /* footer 배경이 항상 짙은 네이비라 로고를 흰색으로 반전 */
+  filter: brightness(0) invert(1);
+}
 .footer-info p { font-size: 14px; color: rgba(255,255,255,.65); margin-bottom: 6px; }
 .footer-info a { color: var(--accent); font-weight: 600; }
 .footer-copyright { font-size: 12.5px; color: rgba(255,255,255,.4); margin-top: 24px; }
@@ -407,6 +408,38 @@ ul { list-style: none; }
   transition: opacity .7s var(--ease), transform .7s var(--ease);
 }
 .reveal.in-view { opacity: 1; transform: translateY(0); }
+
+/* ===== Side motif (CI 워터마크, 초광폭 화면 전용) ===== */
+.intro::before,
+.support::before,
+.gallery-section::before,
+.history-section::before {
+  content: "";
+  display: none;
+  position: absolute;
+  top: 50%;
+  width: 220px;
+  height: 220px;
+  background-image: var(--motif-ci);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: .06;
+  pointer-events: none;
+  z-index: 0;
+  transform: translateY(-50%);
+}
+.intro::before,
+.gallery-section::before { left: 40px; }
+.support::before,
+.history-section::before { right: 40px; }
+
+@media (min-width: 1900px) {
+  .intro::before,
+  .support::before,
+  .gallery-section::before,
+  .history-section::before { display: block; }
+}
 
 /* ===== Responsive ===== */
 @media (max-width: 900px) {
