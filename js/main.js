@@ -64,18 +64,40 @@
   /* ---- Gallery lightbox ---- */
   const lightbox = document.getElementById("lightbox");
   const lightboxImg = document.getElementById("lightboxImg");
+  const lightboxVideo = document.getElementById("lightboxVideo");
   const lightboxCaption = document.getElementById("lightboxCaption");
   const lightboxClose = document.getElementById("lightboxClose");
 
   document.querySelectorAll(".gallery-item").forEach((item) => {
     item.addEventListener("click", () => {
+      lightboxVideo.style.display = "none";
+      lightboxVideo.innerHTML = "";
+      lightboxImg.style.display = "block";
       lightboxImg.style.backgroundImage = item.style.backgroundImage;
       lightboxCaption.textContent = item.dataset.caption || "";
       lightbox.classList.add("open");
     });
   });
 
-  const closeLightbox = () => lightbox.classList.remove("open");
+  /* ---- Video lightbox ---- */
+  document.querySelectorAll(".video-card").forEach((card) => {
+    card.addEventListener("click", () => {
+      const videoId = card.dataset.videoId;
+      lightboxImg.style.display = "none";
+      lightboxVideo.style.display = "block";
+      lightboxVideo.innerHTML =
+        '<iframe src="https://www.youtube.com/embed/' + videoId +
+        '?autoplay=1" title="' + (card.dataset.caption || "") +
+        '" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+      lightboxCaption.textContent = card.dataset.caption || "";
+      lightbox.classList.add("open");
+    });
+  });
+
+  const closeLightbox = () => {
+    lightbox.classList.remove("open");
+    lightboxVideo.innerHTML = "";
+  };
   lightboxClose.addEventListener("click", closeLightbox);
   lightbox.addEventListener("click", (e) => {
     if (e.target === lightbox) closeLightbox();

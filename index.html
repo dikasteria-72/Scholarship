@@ -45,7 +45,6 @@
   </div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
-    <p class="hero-eyebrow">KOCEA SCHOLARSHIP PROGRAM</p>
     <h1 class="hero-title">대한민국 건설의 미래,<br>당신이 주인공입니다!</h1>
     <p class="hero-desc">한국건설기술인협회가 미래 건설산업을 이끌어갈 청년 인재를 위해 장학사업을 운영합니다.</p>
   </div>
@@ -57,7 +56,6 @@
 <!-- ================= 사업소개 ================= -->
 <section id="intro" class="section intro">
   <div class="container">
-    <p class="section-eyebrow reveal">ABOUT</p>
     <h2 class="section-title reveal">장학사업 소개</h2>
     <div class="intro-grid">
       <div class="intro-text reveal">
@@ -74,7 +72,7 @@
         </p>
       </div>
       <div class="intro-visual reveal">
-        <div class="intro-img" data-placeholder="사업소개 대표 이미지"></div>
+        <img src="assets/images/chairman.jpg" alt="한국건설기술인협회 협회장" class="intro-img">
       </div>
     </div>
   </div>
@@ -83,7 +81,6 @@
 <!-- ================= 지원내용/자격 ================= -->
 <section id="support" class="section support">
   <div class="container">
-    <p class="section-eyebrow reveal">SUPPORT</p>
     <h2 class="section-title reveal">지원 내용 및 자격</h2>
     <div class="card-grid">
       <div class="card reveal">
@@ -113,18 +110,22 @@
 <!-- ================= 행사영상 ================= -->
 <section id="video" class="section video-section">
   <div class="container">
-    <p class="section-eyebrow reveal light">HIGHLIGHT</p>
     <h2 class="section-title reveal light">금년도 행사 하이라이트</h2>
     <p class="section-desc reveal light">[플레이스홀더] 2026년 장학증서 수여식 및 현장 견학 프로그램 영상</p>
-    <div class="video-wrap reveal">
-      <!-- 유튜브 업로드 후 VIDEO_ID_HERE 를 실제 영상 ID로 교체하세요 -->
-      <iframe
-        src="https://www.youtube.com/embed/VIDEO_ID_HERE"
-        title="2026 KOCEA 장학사업 행사 영상"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowfullscreen
-        loading="lazy">
-      </iframe>
+    <!-- 유튜브 업로드 후 VIDEO_ID_1~3 을 실제 영상 ID로 교체하세요. 썸네일은 영상 ID 기반으로 자동 생성됩니다. -->
+    <div class="video-grid">
+      <div class="video-card reveal" data-video-id="VIDEO_ID_1" data-caption="장학증서 수여식" style="background-image:url('https://img.youtube.com/vi/VIDEO_ID_1/hqdefault.jpg')">
+        <span class="video-play" aria-hidden="true"></span>
+        <span class="video-caption">장학증서 수여식</span>
+      </div>
+      <div class="video-card reveal" data-video-id="VIDEO_ID_2" data-caption="현장 견학 프로그램" style="background-image:url('https://img.youtube.com/vi/VIDEO_ID_2/hqdefault.jpg')">
+        <span class="video-play" aria-hidden="true"></span>
+        <span class="video-caption">현장 견학 프로그램</span>
+      </div>
+      <div class="video-card reveal" data-video-id="VIDEO_ID_3" data-caption="멘토링 프로그램" style="background-image:url('https://img.youtube.com/vi/VIDEO_ID_3/hqdefault.jpg')">
+        <span class="video-play" aria-hidden="true"></span>
+        <span class="video-caption">멘토링 프로그램</span>
+      </div>
     </div>
   </div>
 </section>
@@ -132,7 +133,6 @@
 <!-- ================= 갤러리 ================= -->
 <section id="gallery" class="section gallery-section">
   <div class="container">
-    <p class="section-eyebrow reveal">GALLERY</p>
     <h2 class="section-title reveal">금년도 행사 사진</h2>
     <div class="gallery-grid">
       <div class="gallery-item reveal" style="background-image:url('assets/images/gallery-01.jpg')" data-caption="장학증서 수여식"></div>
@@ -148,7 +148,6 @@
 <!-- ================= 연혁/성과 ================= -->
 <section id="history" class="section history-section">
   <div class="container">
-    <p class="section-eyebrow reveal">HISTORY</p>
     <h2 class="section-title reveal">연혁 및 성과</h2>
 
     <!-- data-target 값은 예시 플레이스홀더입니다. 실제 통계로 교체하세요 -->
@@ -203,6 +202,7 @@
 <div class="lightbox" id="lightbox">
   <button class="lightbox-close" id="lightboxClose" aria-label="닫기">×</button>
   <div class="lightbox-img" id="lightboxImg"></div>
+  <div class="lightbox-video" id="lightboxVideo"></div>
   <p class="lightbox-caption" id="lightboxCaption"></p>
 </div>
 

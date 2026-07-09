@@ -29,9 +29,9 @@ node -e "require('http').createServer((req,res)=>{const fs=require('fs'),path=re
 
 `index.html`
 1. `#hero` — 배경 영상(자체 호스팅 mp4) + 캐치프레이즈
-2. `#intro` — 사업 소개 (ABOUT)
+2. `#intro` — 사업 소개, 협회장 대표 이미지
 3. `#support` — 지원 대상/금액/인원/절차 카드 4개
-4. `#video` — 금년도 행사 영상 (유튜브 iframe 임베드)
+4. `#video` — 금년도 행사 하이라이트 영상 3편 (썸네일 카드 그리드 → 클릭 시 라이트박스에서 유튜브 재생)
 5. `#gallery` — 사진 그리드 + 라이트박스
 6. `#history` — 통계 카운터 + 타임라인
 7. `footer#contact` — 협회 연락처
@@ -71,8 +71,9 @@ node -e "require('http').createServer((req,res)=>{const fs=require('fs'),path=re
 |---|---|---|
 | 로고 | 완료 — `assets/images/ci.png` 적용 (`.nav-logo`/`.footer-logo`, 어두운 배경에서는 CSS invert 필터로 흰색 표시) | - |
 | 히어로 배경 | 그라디언트 폴백 | `assets/videos/hero.mp4` (위 사양 참고) |
+| 사업소개 대표 이미지 | 완료 — `assets/images/chairman.jpg` 적용 (`.intro-img`, 원본 3:4 비율에 프레임을 맞춤) | - |
 | 사업소개/지원내용 문구 | `[플레이스홀더]` 텍스트 | index.html 직접 수정 |
-| 행사 영상 | `VIDEO_ID_HERE` | 유튜브 업로드 후 iframe src의 영상 ID 교체 |
+| 행사 하이라이트 영상 3편 | `VIDEO_ID_1`~`VIDEO_ID_3` | 유튜브 업로드 후 `.video-card`의 `data-video-id`와 썸네일 `background-image` url의 영상 ID 교체 (썸네일은 `img.youtube.com`에서 자동 생성되므로 별도 캡처 이미지 불필요) |
 | 갤러리 사진 6장 | 회색 placeholder | `assets/images/gallery-01.jpg` ~ `gallery-06.jpg` 추가 (자동 반영됨) |
 | 연혁 통계 숫자 | 예시값 (128/320/5) | `.stat-num`의 `data-target` 값 교체 |
 | 문의처 | 예시 주소/전화 | footer 직접 수정 |
