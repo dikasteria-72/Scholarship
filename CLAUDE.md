@@ -30,7 +30,12 @@ node -e "require('http').createServer((req,res)=>{const fs=require('fs'),path=re
 `index.html`
 1. `#hero` — 배경 영상(자체 호스팅 mp4) + 캐치프레이즈
 2. `#intro` — 사업 소개, 협회장 대표 이미지
-3. `#support` — 지원 대상/금액/인원/절차 카드 4개
+3. `#support` — 지원 대상/금액/선발·절차 3단계. sticky-scroll 방식으로 스크롤에 따라
+   좌측 텍스트(단계별 제목/설명)와 우측 이미지가 함께 전환된다 (`#supportScroll` 300vh
+   래퍼 안에 `position: sticky` 패널, `js/main.js`가 스크롤 진행률을 계산해 단계 전환).
+   두산에너빌리티 메인 페이지의 "에너지 솔루션 신사업" 슬라이드 섹션에서 레이아웃(좌 텍스트/
+   우 이미지, 점 페이지네이션)을 참고했으나, 라이브러리·휠 하이재킹 없이 순수 sticky+스크롤
+   진행률 계산으로 재구현함.
 4. `#video` — 금년도 행사 하이라이트 영상 3편 (썸네일 카드 그리드 → 클릭 시 라이트박스에서 유튜브 재생)
 5. `#gallery` — 사진 그리드 + 라이트박스
 6. `#history` — 통계 카운터 + 타임라인
@@ -40,7 +45,8 @@ node -e "require('http').createServer((req,res)=>{const fs=require('fs'),path=re
 새 섹션 추가 시 기존 변수(`--navy`, `--accent`, `--radius`, `--container` 등)를 재사용할 것.
 
 `js/main.js`는 IIFE 하나에 기능별로 나뉘어 있다: sticky nav, 모바일 메뉴 토글, `IntersectionObserver`
-기반 scroll reveal(`.reveal` → `.in-view`), 통계 카운터 애니메이션, 갤러리 라이트박스.
+기반 scroll reveal(`.reveal` → `.in-view`), 지원내용 sticky-scroll 단계 전환(`#supportScroll`),
+통계 카운터 애니메이션, 갤러리 라이트박스.
 프레임워크/모듈 번들러 없이 바닐라 JS로 전부 처리한다 — 새 인터랙션도 이 패턴을 따를 것.
 
 ## Design system
@@ -73,6 +79,7 @@ node -e "require('http').createServer((req,res)=>{const fs=require('fs'),path=re
 | 히어로 배경 | 그라디언트 폴백 | `assets/videos/hero.mp4` (위 사양 참고) |
 | 사업소개 대표 이미지 | 완료 — `assets/images/chairman.jpg` 적용 (`.intro-img`, 원본 3:4 비율에 프레임을 맞춤) | - |
 | 사업소개/지원내용 문구 | `[플레이스홀더]` 텍스트 | index.html 직접 수정 |
+| 지원내용 sticky-scroll 이미지 3장 | 회색 그라디언트 placeholder | `assets/images/support-01.jpg` ~ `support-03.jpg` 추가 (자동 반영됨, 4:5 비율 권장) |
 | 행사 하이라이트 영상 3편 | `VIDEO_ID_1`~`VIDEO_ID_3` | 유튜브 업로드 후 `.video-card`의 `data-video-id`와 썸네일 `background-image` url의 영상 ID 교체 (썸네일은 `img.youtube.com`에서 자동 생성되므로 별도 캡처 이미지 불필요) |
 | 갤러리 사진 6장 | 회색 placeholder | `assets/images/gallery-01.jpg` ~ `gallery-06.jpg` 추가 (자동 반영됨) |
 | 연혁 통계 숫자 | 예시값 (128/320/5) | `.stat-num`의 `data-target` 값 교체 |

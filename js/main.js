@@ -61,6 +61,38 @@
   );
   statNums.forEach((el) => statObserver.observe(el));
 
+  /* ---- Support scroll steps ---- */
+  const supportScroll = document.getElementById("supportScroll");
+  if (supportScroll) {
+    const visuals = supportScroll.querySelectorAll(".support-visual-img");
+    const steps = supportScroll.querySelectorAll(".support-step");
+    const dots = supportScroll.querySelectorAll(".support-dot");
+    const total = steps.length;
+    let activeIndex = -1;
+    let ticking = false;
+
+    const updateSupportStep = () => {
+      ticking = false;
+      const rect = supportScroll.getBoundingClientRect();
+      const scrollable = rect.height - window.innerHeight;
+      const progress = scrollable > 0 ? Math.min(Math.max(-rect.top / scrollable, 0), 1) : 0;
+      const index = Math.min(total - 1, Math.floor(progress * total));
+      if (index === activeIndex) return;
+      activeIndex = index;
+      visuals.forEach((el, i) => el.classList.toggle("active", i === index));
+      steps.forEach((el, i) => el.classList.toggle("active", i === index));
+      dots.forEach((el, i) => el.classList.toggle("active", i === index));
+    };
+
+    window.addEventListener("scroll", () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(updateSupportStep);
+      }
+    }, { passive: true });
+    updateSupportStep();
+  }
+
   /* ---- Gallery lightbox ---- */
   const lightbox = document.getElementById("lightbox");
   const lightboxImg = document.getElementById("lightboxImg");
