@@ -227,7 +227,7 @@ ul { list-style: none; }
 }
 
 /* ===== Support scroll steps ===== */
-.support { background: var(--bg-alt); position: relative; padding-bottom: 0; }
+.support { background: var(--bg); position: relative; padding-bottom: 0; }
 
 .support-scroll {
   position: relative;
