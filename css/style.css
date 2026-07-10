@@ -565,7 +565,7 @@ ul { list-style: none; }
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
-  opacity: .06;
+  opacity: .1;
   pointer-events: none;
   z-index: 0;
   transform: translateY(-50%);

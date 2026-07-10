@@ -79,7 +79,7 @@ node -e "require('http').createServer((req,res)=>{const fs=require('fs'),path=re
 | 히어로 배경 | 그라디언트 폴백 | `assets/videos/hero.mp4` (위 사양 참고) |
 | 사업소개 대표 이미지 | 완료 — `assets/images/chairman.jpg` 적용 (`.intro-img`, 원본 3:4 비율에 프레임을 맞춤) | - |
 | 사업소개/지원내용 문구 | `[플레이스홀더]` 텍스트 | index.html 직접 수정 |
-| 지원내용 sticky-scroll 이미지 3장 | 회색 그라디언트 placeholder | `assets/images/support-01.jpg` ~ `support-03.jpg` 추가 (자동 반영됨, 4:5 비율 권장) |
+| 지원내용 sticky-scroll 이미지 3장 | 회색 그라디언트 placeholder | `assets/images/support-01.jpg` ~ `support-03.jpg` 추가 (자동 반영됨, 3:4 비율 권장 — `.support-visual` 프레임 기준) |
 | 행사 하이라이트 영상 3편 | `VIDEO_ID_1`~`VIDEO_ID_3` | 유튜브 업로드 후 `.video-card`의 `data-video-id`와 썸네일 `background-image` url의 영상 ID 교체 (썸네일은 `img.youtube.com`에서 자동 생성되므로 별도 캡처 이미지 불필요) |
 | 갤러리 사진 6장 | 회색 placeholder | `assets/images/gallery-01.jpg` ~ `gallery-06.jpg` 추가 (자동 반영됨) |
 | 연혁 통계 숫자 | 예시값 (128/320/5) | `.stat-num`의 `data-target` 값 교체 |
