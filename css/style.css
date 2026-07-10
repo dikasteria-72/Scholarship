@@ -216,9 +216,35 @@ ul { list-style: none; }
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 64px;
-  align-items: center;
+  align-items: start;
 }
-.intro-text p { color: var(--text-muted); margin-bottom: 18px; font-size: clamp(16px, 1.35vw, 18px); line-height: 1.75; }
+/* 협회장 인사말(편지글) */
+.intro-text p {
+  color: #3c4450;
+  margin-bottom: 18px;
+  font-size: clamp(15px, 1.15vw, 16.5px);
+  line-height: 1.95;
+  word-break: keep-all;
+}
+.intro-lead {
+  font-size: clamp(17px, 1.5vw, 20px) !important;
+  font-weight: 600;
+  line-height: 1.7 !important;
+  color: var(--navy-dark) !important;
+  margin-bottom: 24px !important;
+}
+.intro-sign {
+  margin-top: 28px;
+  text-align: right;
+  color: var(--text) !important;
+  font-weight: 800;
+  font-size: clamp(19px, 1.8vw, 23px) !important;
+}
+.intro-sign strong {
+  color: var(--text);
+  font-weight: 800;
+  margin-left: 4px;
+}
 .intro-img {
   width: 100%;
   aspect-ratio: 3/4;
@@ -584,7 +610,13 @@ ul { list-style: none; }
 
 /* ===== Responsive ===== */
 @media (max-width: 900px) {
-  .intro-grid { grid-template-columns: 1fr; }
+  .intro-grid { grid-template-columns: 1fr; gap: 32px; }
+  /* 데스크톱 전용 줄바꿈은 모바일에서 해제 */
+  .pc-br { display: none; }
+  /* 모바일에서는 협회장 사진을 인사말 위로 */
+  .intro-visual { order: -1; }
+  /* 원본 비율 유지 — 자르지 않고 높이로만 축소 후 가운데 정렬 */
+  .intro-img { aspect-ratio: auto; width: auto; max-width: 100%; max-height: 420px; margin: 0 auto; }
   .support-sticky-inner { grid-template-columns: 1fr; gap: 28px; }
   .support-visual { aspect-ratio: 16/10; order: -1; }
   .video-grid { grid-template-columns: repeat(2, 1fr); }
