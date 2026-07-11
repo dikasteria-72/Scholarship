@@ -37,13 +37,22 @@
   /* ---- Stat counters ---- */
   const statNums = document.querySelectorAll(".stat-num");
   const animateCount = (el) => {
-    const target = parseInt(el.dataset.target, 10) || 0;
+    const raw = el.dataset.target || "";
+    const suffix = el.dataset.suffix || "";
+    const target = parseFloat(raw) || 0;
+    // data-target에 소수점이 있으면 그 자릿수를 유지 (예: "2.2" → 1자리)
+    const decimals = (raw.split(".")[1] || "").length;
+    const format = (n) =>
+      n.toLocaleString(undefined, {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals,
+      }) + suffix;
     const duration = 1400;
     const start = performance.now();
     const step = (now) => {
       const progress = Math.min((now - start) / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
-      el.textContent = Math.round(eased * target).toLocaleString();
+      el.textContent = format(eased * target);
       if (progress < 1) requestAnimationFrame(step);
     };
     requestAnimationFrame(step);

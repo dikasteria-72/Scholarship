@@ -450,7 +450,9 @@ ul { list-style: none; }
   color: var(--navy);
   margin-bottom: 8px;
 }
-.stat-label { font-size: 13px; color: var(--text-muted); font-weight: 600; }
+.stat-label { display: block; font-size: 13px; color: var(--text-muted); font-weight: 600; }
+/* 라벨이 여러 줄일 때 줄 간격 확보 (한 줄짜리 stat엔 영향 없음) */
+.stat-label + .stat-label { margin-top: 4px; }
 
 /* ===== Timeline (가로형) ===== */
 .timeline {
