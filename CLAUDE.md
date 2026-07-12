@@ -28,7 +28,17 @@ node -e "require('http').createServer((req,res)=>{const fs=require('fs'),path=re
 원페이지 스크롤 구조. 섹션 순서가 곧 정보 설계이므로 순서를 바꾸지 말 것:
 
 `index.html`
-1. `#hero` — 배경 영상(자체 호스팅 mp4) + 캐치프레이즈
+1. `#hero` — 배경 영상(자체 호스팅 `assets/videos/hero.mp4`) + 캐치프레이즈(`.hero-content`).
+   - **데스크톱**: 영상을 `object-fit: cover`로 풀블리드, 그 위에 텍스트를 얹는다. 텍스트는
+     항상 보이지 않고 **영상 재생 3~11초 구간에서만** 페이드로 노출된다(`js/main.js`가
+     `timeupdate`로 `.hero-content.show` 토글, 영상이 loop이라 매 사이클 반복). 얼굴과 겹치지
+     않게 `.hero-content { margin-top: 28vh }`로 하단 배치, `.hero-desc`는 한 줄 고정
+     (`white-space: nowrap` + `.hero-content` `max-width: 960px`).
+   - **모바일(≤720px)**: 가로(16:9) 영상을 세로 화면에서 좌우로 크롭하지 않도록 히어로를
+     [상단 영상 배너 → 하단 네이비 배경 텍스트]로 재구성한다 — `.hero`를 block+네이비 배경으로
+     바꾸고 `.hero-bg`에 `aspect-ratio: 16/9`를 줘 전체 장면을 보여준 뒤, `.hero-content`를
+     배너 아래에 항상 표시(영상 타이밍 노출은 데스크톱 전용). 영상 위에 텍스트가 얹히지 않으므로
+     `.hero-video` 어둡게 깔던 필터는 해제한다.
 2. `#intro` — 사업 소개, 협회장 대표 이미지
 3. `#video` — 금년도 행사 하이라이트 영상 3편 (썸네일 카드 그리드 → 클릭 시 라이트박스에서 유튜브 재생)
 4. `#gallery` — 사진 그리드 + 라이트박스
@@ -58,9 +68,10 @@ node -e "require('http').createServer((req,res)=>{const fs=require('fs'),path=re
 `css/style.css`는 `:root` CSS 변수(색상 토큰)를 최상단에 정의하고 섹션 순서대로 스타일을 배치한다.
 새 섹션 추가 시 기존 변수(`--navy`, `--accent`, `--radius`, `--container` 등)를 재사용할 것.
 
-`js/main.js`는 IIFE 하나에 기능별로 나뉘어 있다: sticky nav, 모바일 메뉴 토글, `IntersectionObserver`
+`js/main.js`는 IIFE 하나에 기능별로 나뉘어 있다: sticky nav, 히어로 텍스트 타이밍 노출
+(영상 3~11초 구간에만 `.hero-content.show` 토글), 모바일 메뉴 토글, `IntersectionObserver`
 기반 scroll reveal(`.reveal` → `.in-view`), 지원내용 sticky-scroll 단계 전환(`#supportScroll`),
-통계 카운터 애니메이션, 갤러리 라이트박스.
+통계 카운터 애니메이션, 갤러리·영상 공용 라이트박스.
 프레임워크/모듈 번들러 없이 바닐라 JS로 전부 처리한다 — 새 인터랙션도 이 패턴을 따를 것.
 
 ## Design system
@@ -76,10 +87,12 @@ node -e "require('http').createServer((req,res)=>{const fs=require('fs'),path=re
 
 `assets/videos/hero.mp4`에 파일을 넣으면 자동 재생된다 (`<video autoplay muted loop playsinline>`,
 `object-fit: cover`). 파일이 없으면 네이비 그라디언트로 자연스럽게 폴백된다 (콘솔 에러 없음, 확인 완료).
+현재 실제 파일(1920×1080, 약 15초)이 들어가 있다. **텍스트 노출 타이밍(3~11초)은 이 영상 길이·
+장면 구성에 맞춘 값**이므로 영상을 교체하면 `js/main.js`의 `SHOW_START/SHOW_END`도 함께 조정할 것.
 
 - 길이: 10~20초 무음 루프
 - 해상도: 1080p 이하
-- 용량: 10MB 미만 (초기 로딩 속도 때문)
+- 용량: 10MB 미만 권장 (초기 로딩 속도 때문 — 현재 파일은 약 12.6MB로 약간 초과, 여유 되면 재압축)
 - 원본 행사 영상(유튜브 업로드본)에서 인상적인 구간만 잘라 무음 처리해서 사용
 - 폴백용 정지 이미지는 `assets/images/hero-poster.jpg`에 추가 가능 (아직 없음)
 
@@ -90,7 +103,7 @@ node -e "require('http').createServer((req,res)=>{const fs=require('fs'),path=re
 | 위치 | 현재 상태 | 교체 파일/방법 |
 |---|---|---|
 | 로고 | 완료 — `assets/images/ci.png` 적용 (`.nav-logo`/`.footer-logo`, 어두운 배경에서는 CSS invert 필터로 흰색 표시) | - |
-| 히어로 배경 | 그라디언트 폴백 | `assets/videos/hero.mp4` (위 사양 참고) |
+| 히어로 배경 | 완료 — `assets/videos/hero.mp4` 적용(약 12.6MB, 여유 되면 재압축) | 교체 시 위 사양 및 텍스트 타이밍(3~11초) 참고 |
 | 사업소개 대표 이미지 | 완료 — `assets/images/chairman.jpg` 적용 (`.intro-img`, 원본 3:4 비율에 프레임을 맞춤) | - |
 | 사업소개/지원내용 문구 | `[플레이스홀더]` 텍스트 | index.html 직접 수정 |
 | 지원내용 단계 이미지 3장 | 회색 배경 placeholder | `assets/images/support-01.jpg` ~ `support-03.jpg` 추가 (자동 반영됨). 각 `.support-step`의 `.support-step-media` 배경으로 들어가며 `cover`로 크롭됨(데스크톱 우측 세로 이미지 `max-height:460px`, 모바일 16:10). 단계당 이미지 1장씩 대응 |
