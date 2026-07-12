@@ -139,40 +139,35 @@ ul { list-style: none; }
   position: relative;
   z-index: 2;
   text-align: center;
-  max-width: 780px;
+  max-width: 960px;
   padding: 0 24px;
-}
-.hero-eyebrow,
-.hero-title,
-.hero-desc {
+  /* 동영상 주인공 얼굴과 겹치지 않게 화면 중앙보다 아래로 배치 */
+  margin-top: 28vh;
+  /* 영상 3~11초 구간에서만 노출 — js/main.js가 .show 를 토글한다 */
   opacity: 0;
-  animation: hero-text-in 1.2s var(--ease) forwards;
+  transform: translateY(24px);
+  transition: opacity 1s var(--ease), transform 1s var(--ease);
 }
+.hero-content.show { opacity: 1; transform: translateY(0); }
 .hero-eyebrow {
   font-size: 16px;
   font-weight: 700;
   letter-spacing: 3px;
   color: var(--text-inverse);
   margin-bottom: 20px;
-  animation-delay: 3s;
 }
 .hero-title {
-  font-size: clamp(32px, 5.5vw, 56px);
+  font-size: clamp(38px, 6.2vw, 64px);
   font-weight: 800;
   line-height: 1.3;
   margin-bottom: 24px;
-  animation-delay: 3.25s;
 }
 .hero-desc {
-  font-size: clamp(15px, 2vw, 18px);
+  font-size: clamp(16px, 2.3vw, 21px);
   color: rgba(255,255,255,.85);
   margin-bottom: 0;
-  animation-delay: 3.5s;
-}
-
-@keyframes hero-text-in {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
+  /* 데스크톱에서는 한 줄로 고정(모바일에선 아래 media에서 해제) */
+  white-space: nowrap;
 }
 
 .scroll-indicator {
@@ -742,6 +737,44 @@ ul { list-style: none; }
   .nav-links a { color: var(--text); }
   .nav-links a:hover { color: var(--navy); }
   .nav-toggle { display: flex; }
+
+  /* ── 히어로: 가로(16:9) 영상을 세로 화면에서 좌우 크롭하지 않도록
+        [상단 영상 배너 → 하단 네이비 배경 텍스트]로 재구성 ── */
+  .hero {
+    min-height: 0;
+    display: block;
+    overflow: visible;
+    /* 영상 위(nav 영역)·아래 텍스트 영역을 채우는 네이비 배경 */
+    background: linear-gradient(160deg, var(--navy-dark), var(--navy));
+    /* 고정 nav 아래에서 영상 배너가 시작되도록 */
+    padding-top: var(--nav-h);
+  }
+  .hero-bg {
+    position: relative;
+    inset: auto;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9; /* 원본 비율 유지 → 좌우 잘림 없이 전체 장면 표시 */
+  }
+  .hero-video {
+    /* 배너에선 텍스트가 위에 얹히지 않으므로 어둡게 깔 필요 없음 */
+    filter: saturate(1.05);
+  }
+  .hero-overlay { display: none; }
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: none;
+    margin-top: 0;
+    padding: 32px 24px 44px;
+    /* 배너 아래에 배치되므로 항상 표시(영상 타이밍 노출은 데스크톱 전용) */
+    opacity: 1;
+    transform: none;
+  }
+  /* 좁은 화면에선 한 줄 강제를 풀어 자연스럽게 줄바꿈 */
+  .hero-desc { white-space: normal; }
+  .scroll-indicator { display: none; }
+
   .section { padding: 80px 0; }
   .support-scroll { height: 210vh; }
   .support-sticky { height: auto; padding: 32px 0; }

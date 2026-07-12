@@ -9,6 +9,28 @@
   onScroll();
   window.addEventListener("scroll", onScroll, { passive: true });
 
+  /* ---- Hero text timed to video loop (3s ~ 12s) ---- */
+  const heroVideo = document.querySelector(".hero-video");
+  const heroContent = document.querySelector(".hero-content");
+  if (heroContent) {
+    const SHOW_START = 3;
+    const SHOW_END = 11;
+    const showHero = (on) => heroContent.classList.toggle("show", on);
+    if (heroVideo) {
+      // 영상이 loop 되며 매 사이클마다 3~12초 구간에서만 텍스트를 노출
+      heroVideo.addEventListener("timeupdate", () => {
+        const t = heroVideo.currentTime;
+        showHero(t >= SHOW_START && t < SHOW_END);
+      });
+      // 영상 로드/재생 불가 시 텍스트를 항상 표시(그라디언트 폴백 상황)
+      heroVideo.addEventListener("error", () => showHero(true));
+      const heroSource = heroVideo.querySelector("source");
+      if (heroSource) heroSource.addEventListener("error", () => showHero(true));
+    } else {
+      showHero(true);
+    }
+  }
+
   /* ---- Mobile nav toggle ---- */
   const navToggle = document.getElementById("navToggle");
   const navLinks = document.getElementById("navLinks");
