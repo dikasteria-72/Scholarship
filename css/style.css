@@ -257,13 +257,15 @@ ul { list-style: none; }
 
 .support-scroll {
   position: relative;
-  height: 300vh; /* 3단계 x 100vh = 스크롤 한 화면당 한 단계 전환 */
+  height: 250vh; /* 3단계 스크롤 구간(과하면 마지막 단계 후 footer까지 빈 여백이 길어짐) */
 }
 .support-sticky {
   position: sticky;
   /* 고정 nav 아래로 붙도록 오프셋 — 그렇지 않으면 콘텐츠 상단이 nav에 가려짐 */
   top: var(--nav-h);
+  /* 콘텐츠 높이에 맞춰 상한을 둬, 짧은 단계에서 아래 빈 공간(→ footer와의 간격)을 줄인다 */
   height: calc(100vh - var(--nav-h));
+  max-height: 680px;
   display: flex;
   overflow: hidden;
 }
@@ -384,11 +386,13 @@ ul { list-style: none; }
 
 .support-visual {
   /* 제목을 sticky 영역에 넣으면서, 이미지는 3:4 고정 대신 남는 높이를 채우고
-     cover로 크롭 → 제목+카드가 한 화면(뷰포트) 안에 모두 들어오게 한다 */
+     cover로 크롭 → 제목+카드가 한 화면(뷰포트) 안에 모두 들어오게 한다.
+     다만 세로가 과하게 길어 보여, 상단 정렬 후 최대 높이를 제한한다 */
   position: relative;
   width: 100%;
   height: 100%;
-  align-self: stretch;
+  max-height: 460px;
+  align-self: start;
   border-radius: var(--radius);
   overflow: hidden;
   background: linear-gradient(135deg, #dfe4ec, #c7cfdc);
