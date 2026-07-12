@@ -33,12 +33,26 @@ node -e "require('http').createServer((req,res)=>{const fs=require('fs'),path=re
 3. `#video` — 금년도 행사 하이라이트 영상 3편 (썸네일 카드 그리드 → 클릭 시 라이트박스에서 유튜브 재생)
 4. `#gallery` — 사진 그리드 + 라이트박스
 5. `#history` — 통계 카운터 + 타임라인
-6. `#support` — 지원 대상/금액/선발·절차 3단계. sticky-scroll 방식으로 스크롤에 따라
-   좌측 텍스트(단계별 제목/설명)와 우측 이미지가 함께 전환된다 (`#supportScroll` 300vh
-   래퍼 안에 `position: sticky` 패널, `js/main.js`가 스크롤 진행률을 계산해 단계 전환).
+6. `#support` — 지원 대상/절차/선발인원 3단계. sticky-scroll 방식으로 스크롤에 따라
+   좌측 텍스트와 우측 이미지가 함께 전환된다 (`#supportScroll` 250vh 래퍼 안에
+   `position: sticky` 패널, `js/main.js`가 스크롤 진행률을 계산해 단계 전환).
    두산에너빌리티 메인 페이지의 "에너지 솔루션 신사업" 슬라이드 섹션에서 레이아웃(좌 텍스트/
    우 이미지, 점 페이지네이션)을 참고했으나, 라이브러리·휠 하이재킹 없이 순수 sticky+스크롤
    진행률 계산으로 재구현함.
+
+   **핵심 구조(중요)**: 각 단계 `.support-step`가 자기 이미지를 직접 포함한다 —
+   `.support-step-media`(배경이미지 div `support-01~03.jpg`) + `.support-step-text`(제목+본문).
+   과거엔 이미지가 별도 `.support-visual` 컨테이너에서 공유됐으나, 데스크톱/모바일을 한 구조로
+   통일하기 위해 이미지를 각 단계 안으로 넣고 `.support-visual`은 제거함. 제목
+   "2026년도 선발전형"(`.support-header`)도 sticky 패널 안에 있어 단계가 바뀌는 동안 고정 표시된다.
+   - **데스크톱**: `.support-sticky-inner`는 flex 컬럼(제목→점→`.support-step-stack`), 각 단계는
+     `position:absolute; inset:0`로 같은 자리에 겹쳐 opacity 크로스페이드. 단계 내부는 2열 그리드로
+     `grid-column`을 지정해 좌=`.support-step-text`, 우=`.support-step-media`(높이 `max-height:460px`).
+     sticky 높이는 `calc(100vh - nav)`에 `max-height:680px` 상한(짧은 단계에서 footer와의 여백 축소).
+   - **모바일(≤900px)**: sticky를 해제(`position:static`, 높이 auto)하고 세 단계를 일반 흐름으로
+     세로로 모두 펼친다 — 단계별 [이미지 → 전체 텍스트]가 순서대로 쌓이고 점(dots)은 숨김.
+     고정 화면 높이 안에 긴 텍스트를 넣으면 잘리기 때문에 채택한 방식. `js/main.js`의 단계 전환은
+     그대로 돌지만 모바일 CSS가 모든 `.support-step`을 항상 보이게 강제하므로 무해하다.
 7. `footer#contact` — 협회 연락처
 
 `css/style.css`는 `:root` CSS 변수(색상 토큰)를 최상단에 정의하고 섹션 순서대로 스타일을 배치한다.
@@ -79,7 +93,7 @@ node -e "require('http').createServer((req,res)=>{const fs=require('fs'),path=re
 | 히어로 배경 | 그라디언트 폴백 | `assets/videos/hero.mp4` (위 사양 참고) |
 | 사업소개 대표 이미지 | 완료 — `assets/images/chairman.jpg` 적용 (`.intro-img`, 원본 3:4 비율에 프레임을 맞춤) | - |
 | 사업소개/지원내용 문구 | `[플레이스홀더]` 텍스트 | index.html 직접 수정 |
-| 지원내용 sticky-scroll 이미지 3장 | 회색 그라디언트 placeholder | `assets/images/support-01.jpg` ~ `support-03.jpg` 추가 (자동 반영됨, 3:4 비율 권장 — `.support-visual` 프레임 기준) |
+| 지원내용 단계 이미지 3장 | 회색 배경 placeholder | `assets/images/support-01.jpg` ~ `support-03.jpg` 추가 (자동 반영됨). 각 `.support-step`의 `.support-step-media` 배경으로 들어가며 `cover`로 크롭됨(데스크톱 우측 세로 이미지 `max-height:460px`, 모바일 16:10). 단계당 이미지 1장씩 대응 |
 | 행사 하이라이트 영상 3편 | `VIDEO_ID_1`~`VIDEO_ID_3` | 유튜브 업로드 후 `.video-card`의 `data-video-id`와 썸네일 `background-image` url의 영상 ID 교체 (썸네일은 `img.youtube.com`에서 자동 생성되므로 별도 캡처 이미지 불필요) |
 | 갤러리 사진 6장 | 회색 placeholder | `assets/images/gallery-01.jpg` ~ `gallery-06.jpg` 추가 (자동 반영됨) |
 | 연혁 통계 숫자 | 예시값 (128/320/5) | `.stat-num`의 `data-target` 값 교체 |

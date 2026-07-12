@@ -73,7 +73,6 @@
   /* ---- Support scroll steps ---- */
   const supportScroll = document.getElementById("supportScroll");
   if (supportScroll) {
-    const visuals = supportScroll.querySelectorAll(".support-visual-img");
     const steps = supportScroll.querySelectorAll(".support-step");
     const dots = supportScroll.querySelectorAll(".support-dot");
     const total = steps.length;
@@ -88,7 +87,6 @@
       const index = Math.min(total - 1, Math.floor(progress * total));
       if (index === activeIndex) return;
       activeIndex = index;
-      visuals.forEach((el, i) => el.classList.toggle("active", i === index));
       steps.forEach((el, i) => el.classList.toggle("active", i === index));
       dots.forEach((el, i) => el.classList.toggle("active", i === index));
     };
