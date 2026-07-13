@@ -9,25 +9,31 @@
   onScroll();
   window.addEventListener("scroll", onScroll, { passive: true });
 
-  /* ---- Hero text timed to video loop (3s ~ 12s) ---- */
+  /* ---- Hero text timed to video loop (0s ~ 11.5s / 12.5s ~ 14.5s) ---- */
   const heroVideo = document.querySelector(".hero-video");
   const heroContent = document.querySelector(".hero-content");
-  if (heroContent) {
-    const SHOW_START = 3;
-    const SHOW_END = 11;
-    const showHero = (on) => heroContent.classList.toggle("show", on);
+  const heroBrand = document.getElementById("heroBrand");
+  if (heroContent || heroBrand) {
+    const SHOW_START = 0;
+    const SHOW_END = 11.5;
+    const BRAND_START = 12.5;
+    const BRAND_END = 14.5;
+    const showHero = (on) => heroContent && heroContent.classList.toggle("show", on);
+    const showBrand = (on) => heroBrand && heroBrand.classList.toggle("show", on);
     if (heroVideo) {
-      // 영상이 loop 되며 매 사이클마다 3~12초 구간에서만 텍스트를 노출
+      // 영상이 loop 되며 매 사이클마다 0~11.5초에는 기존 문구, 12.5~14.5초에는 협회명을 노출
       heroVideo.addEventListener("timeupdate", () => {
         const t = heroVideo.currentTime;
         showHero(t >= SHOW_START && t < SHOW_END);
+        showBrand(t >= BRAND_START && t < BRAND_END);
       });
       // 영상 로드/재생 불가 시 텍스트를 항상 표시(그라디언트 폴백 상황)
-      heroVideo.addEventListener("error", () => showHero(true));
+      heroVideo.addEventListener("error", () => { showHero(true); showBrand(true); });
       const heroSource = heroVideo.querySelector("source");
-      if (heroSource) heroSource.addEventListener("error", () => showHero(true));
+      if (heroSource) heroSource.addEventListener("error", () => { showHero(true); showBrand(true); });
     } else {
       showHero(true);
+      showBrand(true);
     }
   }
 

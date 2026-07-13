@@ -143,12 +143,28 @@ ul { list-style: none; }
   padding: 0 24px;
   /* 동영상 주인공 얼굴과 겹치지 않게 화면 중앙보다 아래로 배치 */
   margin-top: 28vh;
-  /* 영상 3~11초 구간에서만 노출 — js/main.js가 .show 를 토글한다 */
+  /* 영상 0~11.5초 구간에서만 노출 — js/main.js가 .show 를 토글한다 */
   opacity: 0;
   transform: translateY(24px);
   transition: opacity 1s var(--ease), transform 1s var(--ease);
 }
 .hero-content.show { opacity: 1; transform: translateY(0); }
+.hero-brand {
+  position: absolute;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;
+  text-align: center;
+  font-size: clamp(48px, 7vw, 76px);
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: #fff;
+  /* 영상 12.5~14.5초 구간에서만 노출 — js/main.js가 .show 를 토글한다 */
+  opacity: 0;
+  transition: opacity 1s var(--ease);
+}
+.hero-brand.show { opacity: 1; }
 .hero-eyebrow {
   font-size: 16px;
   font-weight: 700;
