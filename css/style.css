@@ -525,6 +525,44 @@ ul { list-style: none; }
 .gallery-item:hover::after { opacity: 1; transform: translateY(0); }
 .gallery-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
 
+/* ===== Press (보도자료) ===== */
+.press-section { background: var(--bg); position: relative; }
+/* 프레임(테두리+라운드). overflow-x는 좁은 화면 초과 대비 안전장치 */
+.press-table-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+.press-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: clamp(14px, 1.2vw, 15px);
+}
+.press-table thead th {
+  background: var(--navy);
+  color: #fff;
+  font-weight: 700;
+  padding: 14px 16px;
+  text-align: left;
+  white-space: nowrap;
+}
+.press-table tbody td {
+  border-top: 1px solid var(--border);
+  padding: 14px 16px;
+  color: var(--text-muted);
+  vertical-align: middle;
+}
+.press-table tbody tr:hover { background: rgba(27,58,107,.04); }
+/* 연번: 좁게 가운데 / 매체명: 고정폭·강조 / 제목: 링크 */
+.press-col-no { width: 64px; text-align: center; font-weight: 600; }
+.press-col-media { width: 200px; font-weight: 600; color: var(--text); }
+.press-title a {
+  color: var(--navy);
+  font-weight: 600;
+  transition: color .2s;
+}
+.press-title a:hover { color: var(--accent); text-decoration: underline; }
+
 /* ===== History ===== */
 .history-section { background: var(--bg-alt); position: relative; }
 .stats {
@@ -823,6 +861,51 @@ ul { list-style: none; }
   .video-grid { grid-template-columns: 1fr; }
   .gallery-grid { grid-template-columns: 1fr; grid-auto-rows: 220px; }
   .gallery-item:nth-child(1) { grid-column: span 1; grid-row: span 1; }
+
+  /* 보도자료: 3열 표를 카드형으로 전환 — 각 행이 카드 1장이 된다 */
+  .press-table-wrap { border: none; border-radius: 0; overflow: visible; }
+  .press-table thead { display: none; } /* 헤더 숨김 */
+  .press-table,
+  .press-table tbody,
+  .press-table tr,
+  .press-table td { display: block; width: 100%; }
+  .press-table tr {
+    position: relative;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 16px 8px;
+    margin-bottom: 12px;
+  }
+  .press-table tr:hover { background: none; }
+  .press-table td { border: none; padding: 0; }
+  /* 연번: 카드 우상단 accent 뱃지 */
+  .press-table .press-col-no {
+    position: absolute;
+    top: 14px; right: 14px;
+    width: auto;
+    min-width: 22px;
+    padding: 2px 9px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    border-radius: 999px;
+  }
+  /* 매체명: 작은 라벨(뱃지와 겹치지 않게 우측 여백) */
+  .press-table .press-col-media {
+    width: auto;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-bottom: 4px;
+    padding-right: 44px;
+  }
+  /* 제목: 크게, 세로 패딩으로 탭 영역 ≥44px 확보 */
+  .press-table .press-title a {
+    display: block;
+    padding: 10px 0;
+    font-size: 16px;
+    line-height: 1.5;
+  }
 
   /* 좁은 화면에서는 가로 타임라인이 읽기 힘들어 세로형으로 전환 */
   .timeline { flex-direction: column; gap: 32px; margin-top: 8px; }
