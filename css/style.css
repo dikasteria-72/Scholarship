@@ -529,6 +529,10 @@ ul { list-style: none; }
 .press-section { background: var(--bg); position: relative; }
 /* 프레임(테두리+라운드). overflow-x는 좁은 화면 초과 대비 안전장치 */
 .press-table-wrap {
+  /* 컨테이너 전체 폭을 다 쓰면 짧은 제목이 왼쪽에만 몰려 오른쪽이 비어 보여서
+     적당히 좁혀 가운데 정렬 */
+  max-width: 1080px;
+  margin: 0 auto;
   overflow-x: auto;
   border: 1px solid var(--border);
   border-radius: var(--radius);
@@ -556,12 +560,26 @@ ul { list-style: none; }
 /* 연번: 좁게 가운데 / 매체명: 고정폭·강조 / 제목: 링크 */
 .press-col-no { width: 64px; text-align: center; font-weight: 600; }
 .press-col-media { width: 200px; font-weight: 600; color: var(--text); }
+/* 제목(좌) + '기사 보기 →' CTA(우)를 양 끝으로 벌려 우측 공백을 채운다 */
 .press-title a {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
   color: var(--navy);
   font-weight: 600;
   transition: color .2s;
 }
-.press-title a:hover { color: var(--accent); text-decoration: underline; }
+.press-title a::after {
+  content: "기사 보기";
+  flex: none;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  transition: color .2s;
+}
+.press-title a:hover { color: var(--accent); }
+.press-title a:hover::after { color: var(--accent); }
 
 /* ===== History ===== */
 .history-section { background: var(--bg-alt); position: relative; }
@@ -899,13 +917,14 @@ ul { list-style: none; }
     margin-bottom: 4px;
     padding-right: 44px;
   }
-  /* 제목: 크게, 세로 패딩으로 탭 영역 ≥44px 확보 */
+  /* 제목: 크게, 세로 패딩으로 탭 영역 ≥44px 확보. 모바일은 제목 클릭으로 연결(CTA 숨김) */
   .press-table .press-title a {
     display: block;
     padding: 10px 0;
     font-size: 16px;
     line-height: 1.5;
   }
+  .press-table .press-title a::after { display: none; }
 
   /* 좁은 화면에서는 가로 타임라인이 읽기 힘들어 세로형으로 전환 */
   .timeline { flex-direction: column; gap: 32px; margin-top: 8px; }
